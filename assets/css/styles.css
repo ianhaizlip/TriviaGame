@@ -1,0 +1,55 @@
+body {
+	background: #0000cd;
+	font-family: 'Ubuntu', sans-serif;
+	color: #0000cd;
+}
+
+div {
+	margin: 10px;
+}
+
+h1 {
+	font-size: 50px;
+	padding-top: 15px;
+}
+
+p {
+	margin: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+button {
+	margin: 5px;
+}
+
+img {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#title {
+	display: inline-block;
+	
+}
+
+#logo {
+	width: 150px;
+}
+
+#slide {
+	padding: 0px;
+}
+
+.container {
+	border: 5px solid #ffd700;
+	background: #ffffff;
+}
+
+.correct {
+	background-color: #ffd700;
+}
+
+.answerPic {
+	width: 97.5%;
+}
