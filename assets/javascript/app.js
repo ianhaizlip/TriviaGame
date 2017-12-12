@@ -93,82 +93,12 @@ $('document').ready(function(){
 		
 	});
 
-	//functions
-
-	//correct or incorrect
-	function triviaAns(input, event){
-		//identify choice
-		// console.log(event);
-		// console.log(this);
-		let ansChoice = $(event.target).attr('result');
-		// console.log(ansChoice);
-		answered = true;
-
-		//if correct choice
-		if (ansChoice === 'correct') {
-			console.log('c');
-			correctAns++;
-			let congratsPrint = `<img class="answerPic" src="./assets/images/${input.congrats}">
-								 <p><strong>Congratulations!</strong>${input.ctext}</p>`;
-			$('#slide').html(congratsPrint);
-		}
-		//wrong choice
-		else{
-			console.log('w');
-			incorrectAns++;
-			let wrongPrint = `<img class="answerPic" src="./assets/images/${input.wrong}">
-								 <p><strong>Wrong!</strong>${input.wtext}</p>`;
-			$('#slide').html(wrongPrint);
-		}
-		clearInterval(timeHolder);
-
-	};
-
-	function tooLate(){
-		unansweredAns ++;
-		let printTooLate = `<img class="answerPic" src="./assets/images/tooLate.gif">
-							</br>
-							<p><strong>Too Late!</strong> You didn\'t answer in time`;
-		$('#slide').html()
-	}
-
-	function randomArray(arr) {
-		for (var i = 0; i < inputArray.length; i++) {
-				let num = Math.floor(Math.random()*3);
-				let holder = inputArray[num];
-				if (arr.includes(holder)) {
-					i--;
-				}
-				else {
-					arr.push(holder);
-				}
-
-			}
-			
-
-	}
-
-
-	//function to control the interval
-	function timer(t) {
-		// time = t;
-		if (t>0) {
-			time--;
-			$('#time').html(`Time: ${time}`);
-		}
-		else {
-			clearInterval(timeHolder);
-			unansweredAns ++;
-			// triviaAns(currentQ);
-		}
-	}
-
+//===================================================
+//functions
 	//Create Question
 	function app(keyArray, currentIndex) {
 		let currentQ = questions[keyArray[currentIndex]];
 
-			// console.log(currentIndex);
-			// console.log(keyArray[currentIndex]);
 			//reset answer
 			answered = false;
 
@@ -179,17 +109,6 @@ $('document').ready(function(){
 			//randomize inputArray
 			let qArray = new Array();
 			randomArray(qArray);
-			
-			// console.log(qArray);
-			// console.log(qArray[0]);
-
-
-			//set timer
-
-			// if (answered === false) {
-			// 	timeHolder = window.setInterval(()=>{timer(150)},1000);
-			// }
-			
 
 			//write the html to display the question and options
 			let questionPrint = `<p class="question">${currentQ.question}</p>
@@ -214,7 +133,13 @@ $('document').ready(function(){
 					},1000);
 
 			// choose the answer and is it right or wrong
-			$('#slide').on('click', '.option', (event)=>{
+			$('#slide').off('click', '.option');
+			$('#slide').on('click', '.option', placeFunction);
+
+
+			//timer for result slide
+			// console.log(answered);
+			function placeFunction(event){
 				triviaAns(currentQ, event);
 				// let 
 				let timeoutID = setTimeout(()=>{
@@ -231,14 +156,83 @@ $('document').ready(function(){
 			console.log(incorrectAns);
 			console.log(unansweredAns);
 
-			});
-
-
-			//timer for result slide
-			// console.log(answered);
-			
+			};	
 	}
-	//end screen
+
+//===============================================================
+	//correct or incorrect
+	function triviaAns(input, event){
+		//identify choice
+		// console.log(event);
+		// console.log(this);
+		let ansChoice = $(event.target).attr('result');
+		// console.log(ansChoice);
+		answered = true;
+
+		//if correct choice
+		if (ansChoice === 'correct') {
+			// console.log('c');
+			correctAns++;
+			let congratsPrint = `<img class="answerPic" src="./assets/images/${input.congrats}">
+								 <p><strong>Congratulations!</strong>${input.ctext}</p>`;
+			$('#slide').html(congratsPrint);
+		}
+		//wrong choice
+		else{
+			// console.log('w');
+			incorrectAns++;
+			let wrongPrint = `<img class="answerPic" src="./assets/images/${input.wrong}">
+								 <p><strong>Wrong!</strong>${input.wtext}</p>`;
+			$('#slide').html(wrongPrint);
+		}
+		clearInterval(timeHolder);
+
+	};
+
+
+//======================================================================================
+	//prints slide when time runs out
+	function tooLate(){
+		unansweredAns ++;
+		let printTooLate = `<img class="answerPic" src="./assets/images/tooLate.gif">
+							</br>
+							<p><strong>Too Late!</strong> You didn\'t answer in time`;
+		$('#slide').html()
+	}
+
+//=====================================================================================
+	//generates a randomize array so the correct answer is not always in the same place
+	function randomArray(arr) {
+		for (var i = 0; i < inputArray.length; i++) {
+				let num = Math.floor(Math.random()*3);
+				let holder = inputArray[num];
+				if (arr.includes(holder)) {
+					i--;
+				}
+				else {
+					arr.push(holder);
+				}
+			}
+	}
+
+//=====================================================================================
+	//function to control the interval
+	function timer(t) {
+		// time = t;
+		if (t>0) {
+			time--;
+			$('#time').html(`Time: ${time}`);
+		}
+		else {
+			clearInterval(timeHolder);
+			unansweredAns ++;
+			// triviaAns(currentQ);
+		}
+	}
+
+	
+//=======================================================================
+	//prints end screen when the last question has been asked
 	function endScreen() {
 		$('#slide').html(
 			`<h3>It\'s Over</h3>
@@ -248,7 +242,8 @@ $('document').ready(function(){
 			);
 	}
 
-	//in time runs out
+//===================================================================================
+	//if time runs out print this slide
 	function timeoutSlide(input, keyArray, currentIndex) {
 		unansweredAns++;
 		let timeoutPrint = `<img class="answerPic" src="./assets/images/${input.wrong}">
@@ -261,5 +256,4 @@ $('document').ready(function(){
 				},7500)
 		clearInterval(timeHolder);
 	}
-
 });
